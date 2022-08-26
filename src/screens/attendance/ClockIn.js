@@ -63,6 +63,7 @@ const ClockInScreen = () => {
             <TouchableOpacity
               onPress={() => {
                 console.log(userLatitude, userLongitude);
+                console.log('Harusnya simpan data disini');
               }}>
               <View className="bg-primary-600 rounded-full p-3 py-2">
                 <Text className="text-white text-lg">Simpan</Text>
