@@ -19,7 +19,7 @@ import HomeScreen from './src/screens/Home';
 import LoginScreen from './src/screens/Login';
 import AppScreen from './src/screens/App';
 import {TailwindProvider} from 'tailwindcss-react-native';
-import ClockInScreen from './src/screens/attendance/ClockIn'; // import {isReadyRef, navigationRef} from 'react-navigation-helper'
+import ClockInScreen from './src/screens/attendance/clock-in/ClockIn'; // import {isReadyRef, navigationRef} from 'react-navigation-helper'
 
 const Stack = createNativeStackNavigator();
 
