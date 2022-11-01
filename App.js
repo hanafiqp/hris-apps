@@ -15,10 +15,11 @@ import {
 } from '@react-navigation/native-stack';
 
 import OnBoardingScreen from './src/screens/OnBoarding';
-import HomeScreen from './src/screens/Home';
+import HomeScreen from './src/screens/home/Home';
 import LoginScreen from './src/screens/Login';
 import AppScreen from './src/screens/App';
 import {TailwindProvider} from 'tailwindcss-react-native';
+import {NativeBaseProvider} from 'native-base';
 import ClockInScreen from './src/screens/attendance/clock-in/ClockIn'; // import {isReadyRef, navigationRef} from 'react-navigation-helper'
 
 const Stack = createNativeStackNavigator();
@@ -27,35 +28,37 @@ const App = () => {
   return (
     <NavigationContainer>
       <TailwindProvider>
-        <Stack.Navigator
-          screenOptions={{
-            gestureEnable: true,
-          }}>
-          <Stack.Screen name="Onboard" component={OnBoardingScreen} />
-          <Stack.Screen
-            name="Login"
-            component={LoginScreen}
-            options={{
-              headerShown: false,
-              presentationStyle: 'modal',
-            }}
-          />
-          <Stack.Screen
-            name="App"
-            component={AppScreen}
-            options={{
-              headerShown: false,
-            }}
-          />
-          <Stack.Screen
-            name="ClockIn"
-            component={ClockInScreen}
-            options={{
-              headerShown: false,
-              presentation: 'modal',
-            }}
-          />
-        </Stack.Navigator>
+        <NativeBaseProvider>
+          <Stack.Navigator
+            screenOptions={{
+              gestureEnable: true,
+            }}>
+            <Stack.Screen name="Onboard" component={OnBoardingScreen} />
+            <Stack.Screen
+              name="Login"
+              component={LoginScreen}
+              options={{
+                headerShown: false,
+                presentationStyle: 'modal',
+              }}
+            />
+            <Stack.Screen
+              name="App"
+              component={AppScreen}
+              options={{
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name="ClockIn"
+              component={ClockInScreen}
+              options={{
+                headerShown: false,
+                presentation: 'modal',
+              }}
+            />
+          </Stack.Navigator>
+        </NativeBaseProvider>
       </TailwindProvider>
     </NavigationContainer>
   );

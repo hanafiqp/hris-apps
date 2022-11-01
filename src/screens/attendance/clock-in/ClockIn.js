@@ -6,6 +6,7 @@ import {
   PermissionsAndroid,
   StyleSheet,
   TouchableHighlight,
+  ToastAndroid,
 } from 'react-native';
 import React, {useEffect, useRef, useState} from 'react';
 import CustomStatusBar from '@components/CustomStatusBar';
@@ -19,6 +20,7 @@ import Geolocation from '@react-native-community/geolocation';
 
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import axios from 'axios';
+import FormClockIn from './form';
 
 const ClockInScreen = () => {
   const [userLongitude, setUserLongitude] = useState(0);
@@ -36,14 +38,38 @@ const ClockInScreen = () => {
           buttonPositive: 'OK',
         },
       );
+
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
         console.log('Lokasi berhasil didapatkan');
-        Geolocation.getCurrentPosition(info => {
-          setUserLatitude(info.coords.latitude);
-          setUserLongitude(info.coords.longitude);
-        });
+        Geolocation.getCurrentPosition(
+          info => {
+            setUserLatitude(info.coords.latitude);
+            setUserLongitude(info.coords.longitude);
+          },
+          error => {
+            if (error.code === 2) {
+              ToastAndroid.showWithGravityAndOffset(
+                'Silahkan cek kembali pengaturan lokasi anda!',
+                ToastAndroid.CENTER,
+                ToastAndroid.TOP,
+                0,
+                10,
+              );
+            }
+          },
+        );
       } else {
-        console.log('Lokasi tidak dapat diakses');
+        if (granted === PermissionsAndroid.RESULTS.DENIED) {
+          ToastAndroid.show(
+            'Location permission denied by user.',
+            ToastAndroid.LONG,
+          );
+        } else if (granted === PermissionsAndroid.RESULTS.NEVER_ASK_AGAIN) {
+          ToastAndroid.show(
+            'Location permission revoked by user.',
+            ToastAndroid.LONG,
+          );
+        }
       }
     } catch (err) {
       console.warn(err);
@@ -153,42 +179,7 @@ const ClockInScreen = () => {
                     {dataLastAttendance?.attendance_date_text}
                   </Text>
                 </View>
-                <ScrollView className="p-4 space-y-4">
-                  <View className="bg-white h-40">
-                    <Text className="text-black">Tipe</Text>
-                    <View className="w-full bg-red-500"></View>
-                  </View>
-                  <View className="bg-white h-40">
-                    <Text className="text-black">asad</Text>
-                  </View>
-                  <View className="bg-white h-40">
-                    <Text className="text-black">asad</Text>
-                  </View>
-                  <View className="bg-white h-40">
-                    <Text className="text-black">asad</Text>
-                  </View>
-                  <View className="bg-white h-40">
-                    <Text className="text-black">asad</Text>
-                  </View>
-                  <View className="bg-white h-40">
-                    <Text className="text-black">asad</Text>
-                  </View>
-                  <View className="bg-white h-40">
-                    <Text className="text-black">asad</Text>
-                  </View>
-                  <View className="bg-white h-40">
-                    <Text className="text-black">asad</Text>
-                  </View>
-                  <View className="bg-white h-40">
-                    <Text className="text-black">asad</Text>
-                  </View>
-                  <View className="bg-white h-40">
-                    <Text className="text-black">asad</Text>
-                  </View>
-                  <View className="bg-white h-40">
-                    <Text className="text-black">asad</Text>
-                  </View>
-                </ScrollView>
+                <FormClockIn />
               </View>
             </View>
           </View>

@@ -11,7 +11,7 @@ import {
 } from 'react-native-heroicons/outline';
 // import {UserCircleIcon} from 'react-native-heroicons/solid';
 import {BlurView} from 'expo-blur';
-import HomeScreen from '../screens/Home';
+import HomeScreen from '../screens/home/Home';
 import LoginScreen from '../screens/Login';
 import {View, TouchableOpacity} from 'react-native';
 

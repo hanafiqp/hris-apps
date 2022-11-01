@@ -59,7 +59,7 @@ const LoginScreen = () => {
               </Text>
               <View className="py-8 flex space-y-4">
                 <TextInput
-                  className="bg-white border border-gray-400 rounded-lg px-4"
+                  className="bg-white border border-gray-400 rounded-lg px-4 focus:border-blue-500"
                   onChangeText={setUsername}
                   value={username}
                   placeholder="Username"

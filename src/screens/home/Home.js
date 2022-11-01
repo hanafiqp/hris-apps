@@ -9,7 +9,7 @@ import {
   RefreshControl,
   FlatList,
 } from 'react-native';
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   BellIcon,
   HomeIcon,
@@ -23,8 +23,10 @@ import {
   LocationMarkerIcon as LocationSolid,
 } from 'react-native-heroicons/solid';
 
-import CustomStatusBar from '../components/CustomStatusBar';
-import ListPayslips from '../components/ListPayslips';
+import CustomStatusBar from '../../components/CustomStatusBar';
+import ListPayslips from '../../components/ListPayslips';
+
+import {AnimatedCircularProgress} from 'react-native-circular-progress';
 
 const wait = timeout => {
   return new Promise(resolve => setTimeout(resolve, timeout));
@@ -32,11 +34,27 @@ const wait = timeout => {
 
 const HomeScreen = () => {
   const [refreshing, setRefreshing] = React.useState(false);
+  const circularProgress = React.createRef();
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
-    wait(2000).then(() => setRefreshing(false));
+    wait(2000).then(() => {
+      setRefreshing(false);
+    });
   }, []);
+
+  const fill = (10 / 30) * 100;
+  useEffect(() => {
+    if (!refreshing) {
+      if (circularProgress.current) {
+        circularProgress.current.animate(fill, 500);
+      }
+    } else {
+      if (circularProgress.current) {
+        circularProgress.current.animate(0, 0);
+      }
+    }
+  }, [refreshing]);
 
   return (
     <>
@@ -75,12 +93,37 @@ const HomeScreen = () => {
           <View className="p-4 pb-0">
             <View className=" relative w-full rounded-3xl flex-row items-center space-x-3">
               <Image
-                source={require('../../assets/imgs/gradient.png')}
+                source={require('../../../assets/imgs/gradient.png')}
                 className="absolute top-0 w-full rounded-3xl h-full"
               />
               <View className="w-36 p-4">
                 <View className="flex-row items-center justify-center">
-                  <View className="h-32 rounded-full bg-white w-32"></View>
+                  <View className="h-32 rounded-full bg-transparent w-32">
+                    {/* Chart attendance */}
+                    <AnimatedCircularProgress
+                      ref={circularProgress}
+                      size={130}
+                      rotation={360}
+                      width={15}
+                      lineCap="round"
+                      fill={fill}
+                      tintColor="#3d5875"
+                      onAnimationComplete={() =>
+                        console.log('onAnimationComplete')
+                      }
+                      backgroundColor="#66bfff88">
+                      {fill => (
+                        <View>
+                          <Text className="text-center text-white text-4xl font-thin">
+                            {Math.round(30 * fill) / 100}
+                          </Text>
+                          <Text className="text-center text-white text-sm">
+                            Attendance
+                          </Text>
+                        </View>
+                      )}
+                    </AnimatedCircularProgress>
+                  </View>
                 </View>
               </View>
               <View className="flex-1 p-4 space-y-2">
@@ -120,7 +163,7 @@ const HomeScreen = () => {
               <View className="rounded-lg">
                 <TouchableOpacity className="flex items-center jusitfy-center space-y-1">
                   <Image
-                    source={require('../../assets/icons/flat/icons-calendar.png')}
+                    source={require('../../../assets/icons/flat/icons-calendar.png')}
                     className="w-14 h-14"
                   />
                   <Text className="text-md">Kehadiran</Text>
@@ -129,7 +172,7 @@ const HomeScreen = () => {
               <View className="rounded-lg">
                 <TouchableOpacity className="flex items-center jusitfy-center space-y-1">
                   <Image
-                    source={require('../../assets/icons/flat/icon-overtime.png')}
+                    source={require('../../../assets/icons/flat/icon-overtime.png')}
                     className="w-14 h-14"
                   />
                   <Text className="text-md">SPKL</Text>
@@ -138,7 +181,7 @@ const HomeScreen = () => {
               <View className="rounded-lg">
                 <TouchableOpacity className="flex items-center jusitfy-center space-y-1">
                   <Image
-                    source={require('../../assets/icons/flat/icon-payslips.png')}
+                    source={require('../../../assets/icons/flat/icon-payslips.png')}
                     className="w-14 h-14"
                   />
                   <Text className="text-md">Payslip</Text>
@@ -147,7 +190,7 @@ const HomeScreen = () => {
               <View className="rounded-lg">
                 <TouchableOpacity className="flex items-center jusitfy-center space-y-1">
                   <Image
-                    source={require('../../assets/icons/flat/icon-approval.png')}
+                    source={require('../../../assets/icons/flat/icon-approval.png')}
                     className="w-14 h-14"
                   />
                   <Text className="text-md">Ijin/Cuti</Text>
